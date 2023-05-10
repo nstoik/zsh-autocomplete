@@ -80,11 +80,15 @@ local -P zsh_data_dir=$xdg_data_home/zsh
 [[ -d $zsh_data_dir ]] ||
     zf_mkdir -pm 0700 $zsh_data_dir
 
-local -P old_logdir=$xdg_data_home/zsh-autocomplete/log
-[[ -d $old_logdir ]] &&
-    zf_rm -fr -- $old_logdir
+# Temp fix as per https://github.com/marlonrichert/zsh-autocomplete/issues/571
+# This avoids an infinte loop of logging errors when loading zsh-autocomplete
+local -P logdir=$xdg_data_home/zsh-autocomplete/log
 
-local -P logdir=${XDG_STATE_HOME:-$HOME/.local/state}/zsh-autocomplete/log
+# local -P old_logdir=$xdg_data_home/zsh-autocomplete/log
+# [[ -d $old_logdir ]] &&
+#     zf_rm -fr -- $old_logdir
+
+# local -P logdir=${XDG_STATE_HOME:-$HOME/.local/state}/zsh-autocomplete/log
 local -P bug=$logdir
 while [[ -e $bug && ! -d $bug ]]; do
   rm -f $bug
